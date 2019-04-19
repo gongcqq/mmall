@@ -1,1 +1,1 @@
-This is a mmall-learning.
+从0开始 独立完成企业级Java电商网站开发(服务端)。
