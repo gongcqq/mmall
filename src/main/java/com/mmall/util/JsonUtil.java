@@ -22,7 +22,7 @@ public class JsonUtil {
     //ObjectMapper是Jackson提供的一个类，作用是实现java对象与json格式之间的相互转化。它可以将对象转换成json字符串，反之亦然。
     private static ObjectMapper objectMapper = new ObjectMapper();
     static{
-        //对象的所有字段全部列入
+        //表示对象的所有字段全部列入
         objectMapper.setSerializationInclusion(Inclusion.ALWAYS);
 
         //取消默认转换timestamps形式
