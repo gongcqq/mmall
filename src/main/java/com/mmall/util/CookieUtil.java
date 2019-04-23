@@ -79,8 +79,8 @@ public class CookieUtil {
                     //前面已经使用ck.setMaxAge(0)方法把cookie的有效期设置成了零，这里把有效期为零的
                     //cookie返回给浏览器后，浏览器就会把这个cookie删除掉。
                     response.addCookie(ck);
-                    //由于这里只处理登录的cookie，所以cookie只有一个，所以一旦cookie进入了这个if语句
-                    //中被处理过了，也就没必要再进行for循环操作了，所以这里直接return。
+                    //由于这里只处理登录的cookie，所以符合要求的cookie只有一个，一旦有cookie信息进入
+                    //了这个if语句中被处理过了，也就没必要再进行for循环操作了，所以这里直接return。
                     return;
                 }
             }

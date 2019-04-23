@@ -2,11 +2,11 @@ package com.mmall.service.impl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
-import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
+import com.mmall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -127,7 +127,7 @@ public class UserServiceImpl implements IUserService {
         //下面的成立，就说明问题以及问题答案是这个用户的，并且是正确的
         if(resultCount>0){
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX+username,forgetToken);
+            RedisShardedPoolUtil.setEx(Const.TOKEN_PREFIX+username,forgetToken,60*60*12);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题的答案错误");
@@ -138,28 +138,28 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public ServerResponse<String> forgetResetPassword(String username,String passwordNew,String forgetToken){
-        if(StringUtils.isBlank(forgetToken)){
-            return ServerResponse.createByErrorMessage("参数错误，token需要传递");
+        if(org.apache.commons.lang3.StringUtils.isBlank(forgetToken)){
+            return ServerResponse.createByErrorMessage("参数错误,token需要传递");
         }
-        ServerResponse<String> validResponse = this.checkValid(username,Const.USERNAME);
+        ServerResponse validResponse = this.checkValid(username,Const.USERNAME);
         if(validResponse.isSuccess()){
+            //用户不存在
             return ServerResponse.createByErrorMessage("用户不存在");
         }
-
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX+username);
-        if(StringUtils.isBlank(token)){
+        String token = RedisShardedPoolUtil.get(Const.TOKEN_PREFIX+username);
+        if(org.apache.commons.lang3.StringUtils.isBlank(token)){
             return ServerResponse.createByErrorMessage("token无效或者过期");
         }
 
-        if(StringUtils.equals(forgetToken,token)){
-            String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+        if(org.apache.commons.lang3.StringUtils.equals(forgetToken,token)){
+            String md5Password  = MD5Util.MD5EncodeUtf8(passwordNew);
             int rowCount = userMapper.updatePasswordByUsername(username,md5Password);
 
-            if(rowCount>0){
+            if(rowCount > 0){
                 return ServerResponse.createBySuccessMessage("修改密码成功");
             }
-        }else {
-            return ServerResponse.createByErrorMessage("token错误，请重新获取重置密码的token");
+        }else{
+            return ServerResponse.createByErrorMessage("token错误,请重新获取重置密码的token");
         }
         return ServerResponse.createByErrorMessage("修改密码失败");
     }

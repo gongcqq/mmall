@@ -7,7 +7,6 @@ import redis.clients.jedis.ShardedJedis;
 import redis.clients.jedis.ShardedJedisPool;
 import redis.clients.util.Hashing;
 import redis.clients.util.Sharded;
-
 import java.util.ArrayList;
 import java.util.List;
 
