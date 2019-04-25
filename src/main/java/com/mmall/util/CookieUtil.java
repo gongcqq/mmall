@@ -60,7 +60,7 @@ public class CookieUtil {
         ck.setPath("/");//代表设置在根目录
         ck.setHttpOnly(true);//这样设置之后，将无法通过脚本获取cookie信息，这么做的目的是为了防止cookie信息泄露，以保证cookie信息的安全
         //单位是秒。
-        //如果这个maxage不设置的话，cookie就不会写入硬盘，而是写在内存。只在当前页面有效。
+        //如果这个maxage不设置的话，cookie就不会写入硬盘，而是写在内存，只在当前页面有效。
         ck.setMaxAge(60 * 60 * 24 * 365);
         log.info("write cookieName:{},cookieValue:{}",ck.getName(),ck.getValue());
         response.addCookie(ck);
