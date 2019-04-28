@@ -1,7 +1,7 @@
 package com.mmall.util;
 
-import com.mmall.common.RedisPool;
 import com.mmall.common.RedisShardedPool;
+import com.mmall.common.RedisPool;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.ShardedJedis;
@@ -123,7 +123,7 @@ public class RedisShardedPoolUtil {
     }
 
     public static void main(String[] args) {
-        ShardedJedis jedis = RedisShardedPool.getJedis();
+        /*ShardedJedis jedis = RedisShardedPool.getJedis();
 
         RedisPoolUtil.set("keyTest","value");
 
@@ -139,7 +139,7 @@ public class RedisShardedPoolUtil {
         String aaa = RedisPoolUtil.get(null);
         System.out.println(aaa);
 
-        System.out.println("end");
+        System.out.println("end");*/
 
     }
 
